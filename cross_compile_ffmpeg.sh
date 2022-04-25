@@ -1504,7 +1504,7 @@ build_libsoxr() {
 }
 
 build_libflite() {
-  download_and_unpack_file http://www.festvox.org/flite/packed/flite-2.1/flite-2.1-release.tar.bz2
+  download_and_unpack_file http://deb.debian.org/debian/pool/main/f/flite/flite_2.1-release.orig.tar.bz2 flite-2.1-release
   cd flite-2.1-release
     apply_patch file://$patch_dir/flite-2.1.0_mingw-w64-fixes.patch
     if [[ ! -f main/Makefile.bak ]]; then
@@ -2356,7 +2356,7 @@ build_ffmpeg() {
       local arch=x86_64
     fi
 
-    init_options="--pkg-config=pkg-config --pkg-config-flags=--static --extra-version=ffmpeg-windows-build-helpers --enable-version3 --disable-debug --disable-w32threads"
+    init_options="--pkg-config=pkg-config --pkg-config-flags=--static --extra-version=.AnyBodyTechnology --enable-version3 --disable-debug --disable-w32threads"
     if [[ $compiler_flavors != "native" ]]; then
       init_options+=" --arch=$arch --target-os=mingw32 --cross-prefix=$cross_prefix"
     else
@@ -2367,32 +2367,68 @@ build_ffmpeg() {
     fi
     if [[ `uname` =~ "5.1" ]]; then
       init_options+=" --disable-schannel"
-      # Fix WinXP incompatibility by disabling Microsoft's Secure Channel, because Windows XP doesn't support TLS 1.1 and 1.2, but with GnuTLS or OpenSSL it does.  XP compat!
+      # Fix WinXP incompatibility by disabling Microsoft's Secure Channel, because Windows XP doesn't support TLS 1.1 and 1.2, but with GnuTLS or OpenSSL it does.  xp_compatcompat!
     fi
-    config_options="$init_options --enable-libcaca --enable-gray --enable-libtesseract --enable-fontconfig --enable-gmp --enable-gnutls --enable-libass --enable-libbluray --enable-libbs2b --enable-libflite --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libilbc --enable-libmodplug --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopus --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libvorbis --enable-libwebp --enable-libzimg --enable-libzvbi --enable-libmysofa --enable-libopenjpeg  --enable-libopenh264 --enable-liblensfun  --enable-libvmaf --enable-libsrt --enable-libxml2 --enable-opengl --enable-libdav1d --enable-cuda-llvm"
+   # config_options="$init_options --enable-libcaca --enable-gray --enable-libtesseract --enable-fontconfig --enable-gmp --enable-gnutls --enable-libass --enable-libbluray --enable-libbs2b --enable-libflite --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libilbc --enable-libmodplug --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopus --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libvorbis --enable-libwebp --enable-libzimg --enable-libzvbi --enable-libmysofa --enable-libopenjpeg  --enable-libopenh264 --enable-liblensfun  --enable-libvmaf --enable-libsrt --enable-libxml2 --enable-opengl --enable-libdav1d --enable-cuda-llvm"
 
-    if [ "$bits_target" != "32" ]; then
-      config_options+=" --enable-libsvthevc"
-      config_options+=" --enable-libsvtav1"
-      # config_options+=" --enable-libsvtvp9"
-    fi
+
+    config_options="$init_options \
+    --disable-doc   \
+    --disable-ffplay \
+    --disable-ffprobe \
+    --disable-runtime-cpudetect \
+    --enable-small \
+    --disable-hwaccels \
+    --disable-network \
+    --disable-muxers \
+    --disable-demuxers \
+    --disable-decoders \
+    --disable-protocols \
+    --disable-filters \
+    --disable-outdevs \
+    --disable-parsers \
+    --disable-bsfs \
+    --disable-devices \
+    --disable-indevs \
+    --enable-gray \
+    --enable-libzimg \
+    --enable-liblensfun \
+    --enable-libxml2 \
+    --enable-muxer=mp4,null,gif,image2,image2pipe \
+    --enable-demuxer=png_pipe,gif,gif-pipe,image2,image2pipe,mov,svg_pipe \
+    --enable-encoder=gif,png,libvpx,libvpx-vp9  \
+    --enable-protocol=file \
+    --enable-indev=lavfi \
+    --enable-parser=bmp,png,gif \
+    --enable-decoder=libvpx,png,libvpx-vp9,vp9,gif \
+    --enable-libvpx \
+    --disable-encoder=a64multi,a64multi5,alias_pix,amv,apng,asv1,asv2,avrp,avui,ayuv,bitpacked,bmp,cfhd,cinepak,cljr,vc2,dnxhd,dpx,dvvideo,exr,ffv1,ffvhuff,fits,flashsv,flashsv2,flv,h261,h263,h263p,h264_amf,h264_mf,h264_nvenc,hevc_amf,hevc_mf,hevc_nvenc,huffyuv,jpeg2000,libopenjpeg,jpegls,ljpeg,magicyuv,mjpeg,mpeg1video,mpeg2video,mpeg4,msmpeg4v2,msmpeg4,msvideo1,pam,pbm,pcx,pfm,pgm,pgmyuv,ppm,prores,prores_aw,prores_ks,qtrle,r10k,r210,rawvideo,roqvideo,rpza,rv10,rv20,sgi,smc,snow,speedhq,sunrast,svq1,targa,tiff,utvideo,v210,v308,v408,v410,vbn,libwebp_anim,libwebp,wmv1,wmv2,wrapped_avframe,xbm,xface,xwd,y41p,yuv4,zlib,zmbv,aac,aac_mf,ac3,ac3_fixed,ac3_mf,adpcm_adx,adpcm_argo,g722,g726,g726le,adpcm_ima_alp,adpcm_ima_amv,adpcm_ima_apm,adpcm_ima_qt,adpcm_ima_ssi,adpcm_ima_wav,adpcm_ima_ws,adpcm_ms,adpcm_swf,adpcm_yamaha,alac,aptx,aptx_hd,comfortnoise,dfpwm,dca,eac3,flac,g723_1,mlp,mp2,mp2fixed,mp3_mf,nellymoser,opus,pcm_alaw,pcm_bluray,pcm_dvd,pcm_f32be,pcm_f32le,pcm_f64be,pcm_f64le,pcm_mulaw,pcm_s16be,pcm_s16be_planar,pcm_s16le,pcm_s16le_planar,pcm_s24be,pcm_s24daud,pcm_s24le,pcm_s24le_planar,pcm_s32be,pcm_s32le,pcm_s32le_planar,pcm_s64be,pcm_s64le,pcm_s8,pcm_s8_planar,pcm_u16be,pcm_u16le,pcm_u24be,pcm_u24le,pcm_u32be,pcm_u32le,pcm_u8,pcm_vidc,real_144,roq_dpcm,s302m,sbc,sonic,sonic_ls,truehd,tta,vorbis,wavpack,wmav1,wmav2,ssa,ass,dvbsub,dvdsub,movtext,srt,subrip,text,ttml,webvtt,xsub,adpcm_g722,adpcm_g726,adpcm_g726le,ra_144,roq \
+    --enable-filter=scale,fps,copy,palettegen,vflip,paletteuse,crop,overlay,geq,fade,loop,setpts "
+
+
+    # if [ "$bits_target" != "32" ]; then
+    #   config_options+=" "
+    #   #config_options+=" --enable-libsvthevc"
+    #   #  config_options+=" --enable-libsvtav1"
+    #   # config_options+=" --enable-libsvtvp9"
+    # fi
 
     #aom must be disabled to use SVT-AV1
-    config_options+=" --enable-libaom"
+    #config_options+=" --enable-libaom"
     #config_options+=" --enable-libsvtav1" #not currently working but compiles if configured
 
     #libxvid must be disabled to use SVT-VP9 (26 lines below); working alongside libvpx was added in https://github.com/OpenVisualCloud/SVT-VP9/pull/71 so vpx no longer needs to be disabled
     config_options+=" --enable-libvpx"
     #config_options+=" --enable-libsvtvp9" #not currently working but compiles if configured
 
-    if [[ $compiler_flavors != "native" ]]; then
-      config_options+=" --enable-nvenc --enable-nvdec" # don't work OS X
-    fi
+    # if [[ $compiler_flavors != "native" ]]; then
+    #    config_options+=" --enable-nvenc --enable-nvdec" # don't work OS X
+    # fi
 
-    config_options+=" --extra-libs=-lharfbuzz" #  grr...needed for pre x264 build???
-    config_options+=" --extra-libs=-lm" # libflite seemed to need this linux native...and have no .pc file huh?
-    config_options+=" --extra-libs=-lshlwapi" # lame needed this, no .pc file?
-    config_options+=" --extra-libs=-lmpg123" # ditto
+    #config_options+=" --extra-libs=-lharfbuzz" #  grr...needed for pre x264 build???
+    # config_options+=" --extra-libs=-lm" # libflite seemed to need this linux native...and have no .pc file huh?
+    # config_options+=" --extra-libs=-lshlwapi" # lame needed this, no .pc file?
+    # config_options+=" --extra-libs=-lmpg123" # ditto
     config_options+=" --extra-libs=-lpthread" # for some reason various and sundry needed this linux native
 
     config_options+=" --extra-cflags=-DLIBTWOLAME_STATIC --extra-cflags=-DMODPLUG_STATIC --extra-cflags=-DCACA_STATIC" # if we ever do a git pull then it nukes changes, which overrides manual changes to configure, so just use these for now :|
