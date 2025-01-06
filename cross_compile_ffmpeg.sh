@@ -2394,8 +2394,8 @@ build_ffmpeg() {
     --enable-libzimg \
     --enable-liblensfun \
     --enable-libxml2 \
-    --enable-muxer=mp4,null,gif,image2,image2pipe \
-    --enable-demuxer=png_pipe,gif,gif-pipe,image2,image2pipe,mov,svg_pipe \
+    --enable-muxer=mp4,webm,matroska,null,gif,image2,image2pipe \
+    --enable-demuxer=png_pipe,matroska,gif,gif-pipe,image2,image2pipe,mov,svg_pipe \
     --enable-encoder=gif,png,libvpx,libvpx-vp9  \
     --enable-protocol=file \
     --enable-indev=lavfi \
