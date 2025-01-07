@@ -981,7 +981,7 @@ build_glfw() {
 }
 
 build_libpng() {
-  do_git_checkout https://github.com/glennrp/libpng.git v1.6.44
+  do_git_checkout https://github.com/glennrp/libpng.git libpng_git v1.6.44
   cd libpng_git
     generic_configure
     do_make_and_make_install
@@ -989,7 +989,7 @@ build_libpng() {
 }
 
 build_libwebp() {
-  do_git_checkout https://chromium.googlesource.com/webm/libwebp.git main
+  do_git_checkout https://chromium.googlesource.com/webm/libwebp.git libwebp_git v1.5.0
   cd libwebp_git
     export LIBPNG_CONFIG="$mingw_w64_x86_64_prefix/bin/libpng-config --static" # LibPNG somehow doesn't get autodetected.
     generic_configure "--disable-wic"
@@ -1000,7 +1000,7 @@ build_libwebp() {
 
 build_harfbuzz() {
   local new_build=false
-  do_git_checkout https://github.com/harfbuzz/harfbuzz.git harfbuzz_git "origin/main"
+  do_git_checkout https://github.com/harfbuzz/harfbuzz.git harfbuzz_git 8.5.0
   if [ ! -f harfbuzz_git/already_done_harf ]; then # Not done or new master, so build
     new_build=true
   fi
@@ -1279,7 +1279,7 @@ build_libogg() {
 }
 
 build_libvorbis() {
-  do_git_checkout https://github.com/xiph/vorbis.git
+  do_git_checkout https://github.com/xiph/vorbisf.git vorbis_git v1.3.7
   cd vorbis_git
     generic_configure "--disable-docs --disable-examples --disable-oggtest"
     do_make_and_make_install
@@ -1287,7 +1287,7 @@ build_libvorbis() {
 }
 
 build_libopus() {
-  do_git_checkout https://github.com/xiph/opus.git
+  do_git_checkout https://github.com/xiph/opus.git opus_git v1.4
   cd opus_git
     generic_configure "--disable-doc --disable-extra-programs --disable-stack-protector"
     do_make_and_make_install
