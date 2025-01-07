@@ -981,7 +981,7 @@ build_glfw() {
 }
 
 build_libpng() {
-  do_git_checkout https://github.com/glennrp/libpng.git
+  do_git_checkout https://github.com/glennrp/libpng.git v1.6.44
   cd libpng_git
     generic_configure
     do_make_and_make_install
@@ -989,7 +989,7 @@ build_libpng() {
 }
 
 build_libwebp() {
-  do_git_checkout https://chromium.googlesource.com/webm/libwebp.git v1.5.0
+  do_git_checkout https://chromium.googlesource.com/webm/libwebp.git main
   cd libwebp_git
     export LIBPNG_CONFIG="$mingw_w64_x86_64_prefix/bin/libpng-config --static" # LibPNG somehow doesn't get autodetected.
     generic_configure "--disable-wic"
