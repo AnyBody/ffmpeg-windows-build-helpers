@@ -31,13 +31,13 @@ if [ $? -eq 0 ]; then
             echo [`date +'%Y%m%dT%H%M%S'`] Static extraction failed. Started: $STARTTIME
         fi
 
-        docker cp ffmpegbuilder:/output/shared/ $OUTPUTDIR
+        # docker cp ffmpegbuilder:/output/shared/ $OUTPUTDIR
 
-        if [ $? -eq 0 ]; then
-            echo [`date +'%Y%m%dT%H%M%S'`] Shared extraction successful. Started: $STARTTIME
-        else
-            echo [`date +'%Y%m%dT%H%M%S'`] Shared extraction failed. Started: $STARTTIME
-        fi
+        # if [ $? -eq 0 ]; then
+        #     echo [`date +'%Y%m%dT%H%M%S'`] Shared extraction successful. Started: $STARTTIME
+        # else
+        #     echo [`date +'%Y%m%dT%H%M%S'`] Shared extraction failed. Started: $STARTTIME
+        # fi
         
     else
         echo [`date +'%Y%m%dT%H%M%S'`] Build failed. Started: $STARTTIME

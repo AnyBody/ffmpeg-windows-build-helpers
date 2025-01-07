@@ -2406,7 +2406,7 @@ build_ffmpeg() {
       local arch=x86_64
     fi
 
-    init_options="--pkg-config=pkg-config --pkg-config-flags=--static --extra-version=ffmpeg-windows-build-helpers --enable-version3 --disable-debug --disable-w32threads"
+    init_options="--pkg-config=pkg-config --pkg-config-flags=--static --extra-version=.AnyBodyTechnology --enable-version3 --disable-debug --disable-w32threads"
     if [[ $compiler_flavors != "native" ]]; then
       init_options+=" --arch=$arch --target-os=mingw32 --cross-prefix=$cross_prefix"
     else
