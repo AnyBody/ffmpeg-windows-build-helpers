@@ -8,7 +8,7 @@ OUTPUTDIR=/output
 ./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=y --build-intel-qsv=n --compiler-flavors=win64 --enable-gpl=n
 
 mkdir -p $OUTPUTDIR/static/bin
-cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffmpeg.exe $OUTPUTDIR/static/bin
+cp -R -f /ffmpeg-windows-build-helpers/sandbox/cross_compilers/mingw-w64-x86_64/x86_64-w64-mingw32/bin/ffmpeg.exe $OUTPUTDIR/static/bin
 # cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffprobe.exe $OUTPUTDIR/static/bin
 # cp -R -f ./sandbox/win64/ffmpeg_git_with_fdk_aac/ffplay.exe $OUTPUTDIR/static/bin
 
