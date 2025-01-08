@@ -2420,81 +2420,113 @@ build_ffmpeg() {
       # Fix WinXP incompatibility by disabling Microsoft's Secure Channel, because Windows XP doesn't support TLS 1.1 and 1.2, but with GnuTLS or OpenSSL it does.  xp_compatcompat!
     fi
     config_options="$init_options"
-    config_options+=" --enable-libcaca"
+    config_options+=" --disable-doc"
+    config_options+=" --disable-ffplay"
+    config_options+=" --disable-ffprobe"
+    config_options+=" --disable-runtime-cpudetect"
+    config_options+=" --enable-small"
+    config_options+=" --disable-hwaccels"
+    config_options+=" --disable-network"
+    config_options+=" --disable-muxers"
+    config_options+=" --disable-demuxers"
+    config_options+=" --disable-decoders"
+    config_options+=" --disable-protocols"
+    config_options+=" --disable-filters"
+    config_options+=" --disable-outdevs"
+    config_options+=" --disable-parsers"
+    config_options+=" --disable-bsfs"
+    config_options+=" --disable-devices"
+    config_options+=" --disable-indevs"
     config_options+=" --enable-gray"
-    config_options+=" --enable-libtesseract"
-    config_options+=" --enable-fontconfig"
-    config_options+=" --enable-gmp"
-    config_options+=" --enable-libass"
-    config_options+=" --enable-libbluray"
-    config_options+=" --enable-libbs2b"
-    config_options+=" --enable-libflite"
-    config_options+=" --enable-libfreetype"
-    config_options+=" --enable-libfribidi"
-    config_options+=" --enable-libgme"
-    config_options+=" --enable-libgsm"
-    config_options+=" --enable-libilbc"
-    config_options+=" --enable-libmodplug"
-    config_options+=" --enable-libmp3lame"
-    config_options+=" --enable-libopencore-amrnb"
-    config_options+=" --enable-libopencore-amrwb"
-    config_options+=" --enable-libopus"
-    config_options+=" --enable-libsnappy"
-    config_options+=" --enable-libsoxr"
-    config_options+=" --enable-libspeex"
-    config_options+=" --enable-libtheora"
-    config_options+=" --enable-libtwolame"
-    config_options+=" --enable-libvo-amrwbenc"
-    config_options+=" --enable-libvorbis"
-    config_options+=" --enable-libwebp"
     config_options+=" --enable-libzimg"
-    config_options+=" --enable-libzvbi"
-    config_options+=" --enable-libmysofa"
-    config_options+=" --enable-libopenjpeg"
-    config_options+=" --enable-libopenh264"
-    config_options+=" --enable-libvmaf"
-    config_options+=" --enable-libsrt"
+    config_options+=" --enable-liblensfun"
     config_options+=" --enable-libxml2"
-    config_options+=" --enable-opengl"
-    config_options+=" --enable-libdav1d"
-    config_options+=" --enable-gnutls"
-
-    if [[ "$bits_target" != "32" ]]; then
-      if [[ $build_svt_hevc = y ]]; then
-        # SVT-HEVC
-        # Apply the correct patches based on version. Logic (n4.4 patch for n4.2, n4.3 and n4.4)  based on patch notes here:
-        # https://github.com/OpenVisualCloud/SVT-HEVC/commit/b5587b09f44bcae70676f14d3bc482e27f07b773#diff-2b35e92117ba43f8397c2036658784ba2059df128c9b8a2625d42bc527dffea1
-        if [[ $ffmpeg_git_checkout_version == *"n4.4"* ]] || [[ $ffmpeg_git_checkout_version == *"n4.3"* ]] || [[ $ffmpeg_git_checkout_version == *"n4.2"* ]]; then
-          git apply "$work_dir/SVT-HEVC_git/ffmpeg_plugin/n4.4-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch"
-          git apply "$patch_dir/SVT-HEVC-0002-doc-Add-libsvt_hevc-encoder-docs.patch"  # upstream patch does not apply on current ffmpeg master
-        elif [[ $ffmpeg_git_checkout_version == *"n4.1"* ]] || [[ $ffmpeg_git_checkout_version == *"n3.4"* ]] || [[ $ffmpeg_git_checkout_version == *"n3.2"* ]] || [[ $ffmpeg_git_checkout_version == *"n2.8"* ]]; then
-          : # too old...
-        else
-          # newer:
-          git apply "$work_dir/SVT-HEVC_git/ffmpeg_plugin/master-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch"
-        fi
-        config_options+=" --enable-libsvthevc"
-      fi
-      if [[ $build_svt_vp9 = y ]]; then
-        # SVT-VP9
-        # Apply the correct patches based on version. Logic (n4.4 patch for n4.2, n4.3 and n4.4)  based on patch notes here:
-        # https://github.com/OpenVisualCloud/SVT-VP9/tree/master/ffmpeg_plugin
-        if [[ $ffmpeg_git_checkout_version == *"n4.3.1"* ]]; then
-          git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/n4.3.1-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
-        elif [[ $ffmpeg_git_checkout_version == *"n4.2.3"* ]]; then
-          git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/n4.2.3-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
-        elif [[ $ffmpeg_git_checkout_version == *"n4.2.2"* ]]; then
-          git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
-        else 
-          # newer:
-          git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
-        fi
-		config_options+=" --enable-libsvtvp9"
-      fi
-      config_options+=" --enable-libsvtav1"
-    fi # else doesn't work/matter with 32 bit
+    config_options+=" --enable-muxer=mp4,null,gif,image2,image2pipe"
+    config_options+=" --enable-demuxer=png_pipe,gif,gif-pipe,image2,image2pipe,mov,svg_pipe"
+    config_options+=" --enable-encoder=gif,png,libvpx,libvpx-vp9 "
+    config_options+=" --enable-protocol=file"
+    config_options+=" --enable-indev=lavfi"
+    config_options+=" --enable-parser=bmp,png,gif"
+    config_options+=" --enable-decoder=libvpx,png,libvpx-vp9,vp9,gif"
     config_options+=" --enable-libvpx"
-    config_options+=" --enable-libaom"
+    config_options+=" --disable-encoder=a64multi,a64multi5,alias_pix,amv,apng,asv1,asv2,avrp,avui,ayuv,bitpacked,bmp,cfhd,cinepak,cljr,vc2,dnxhd,dpx,dvvideo,exr,ffv1,ffvhuff,fits,flashsv,flashsv2,flv,h261,h263,h263p,h264_amf,h264_mf,h264_nvenc,hevc_amf,hevc_mf,hevc_nvenc,huffyuv,jpeg2000,libopenjpeg,jpegls,ljpeg,magicyuv,mjpeg,mpeg1video,mpeg2video,mpeg4,msmpeg4v2,msmpeg4,msvideo1,pam,pbm,pcx,pfm,pgm,pgmyuv,ppm,prores,prores_aw,prores_ks,qtrle,r10k,r210,rawvideo,roqvideo,rpza,rv10,rv20,sgi,smc,snow,speedhq,sunrast,svq1,targa,tiff,utvideo,v210,v308,v408,v410,vbn,libwebp_anim,libwebp,wmv1,wmv2,wrapped_avframe,xbm,xface,xwd,y41p,yuv4,zlib,zmbv,aac,aac_mf,ac3,ac3_fixed,ac3_mf,adpcm_adx,adpcm_argo,g722,g726,g726le,adpcm_ima_alp,adpcm_ima_amv,adpcm_ima_apm,adpcm_ima_qt,adpcm_ima_ssi,adpcm_ima_wav,adpcm_ima_ws,adpcm_ms,adpcm_swf,adpcm_yamaha,alac,aptx,aptx_hd,comfortnoise,dfpwm,dca,eac3,flac,g723_1,mlp,mp2,mp2fixed,mp3_mf,nellymoser,opus,pcm_alaw,pcm_bluray,pcm_dvd,pcm_f32be,pcm_f32le,pcm_f64be,pcm_f64le,pcm_mulaw,pcm_s16be,pcm_s16be_planar,pcm_s16le,pcm_s16le_planar,pcm_s24be,pcm_s24daud,pcm_s24le,pcm_s24le_planar,pcm_s32be,pcm_s32le,pcm_s32le_planar,pcm_s64be,pcm_s64le,pcm_s8,pcm_s8_planar,pcm_u16be,pcm_u16le,pcm_u24be,pcm_u24le,pcm_u32be,pcm_u32le,pcm_u8,pcm_vidc,real_144,roq_dpcm,s302m,sbc,sonic,sonic_ls,truehd,tta,vorbis,wavpack,wmav1,wmav2,ssa,ass,dvbsub,dvdsub,movtext,srt,subrip,text,ttml,webvtt,xsub,adpcm_g722,adpcm_g726,adpcm_g726le,ra_144,roq"
+    config_options+=" --enable-filter=scale,fps,copy,palettegen,vflip,paletteuse,crop,overlay,geq,fade,loop,setpts"
+
+#     config_options+=" --enable-libcaca"
+#     config_options+=" --enable-gray"
+#     config_options+=" --enable-libtesseract"
+#     config_options+=" --enable-fontconfig"
+#     config_options+=" --enable-gmp"
+#     config_options+=" --enable-libass"
+#     config_options+=" --enable-libbluray"
+#     config_options+=" --enable-libbs2b"
+#     config_options+=" --enable-libflite"
+#     config_options+=" --enable-libfreetype"
+#     config_options+=" --enable-libfribidi"
+#     config_options+=" --enable-libgme"
+#     config_options+=" --enable-libgsm"
+#     config_options+=" --enable-libilbc"
+#     config_options+=" --enable-libmodplug"
+#     config_options+=" --enable-libmp3lame"
+#     config_options+=" --enable-libopencore-amrnb"
+#     config_options+=" --enable-libopencore-amrwb"
+#     config_options+=" --enable-libopus"
+#     config_options+=" --enable-libsnappy"
+#     config_options+=" --enable-libsoxr"
+#     config_options+=" --enable-libspeex"
+#     config_options+=" --enable-libtheora"
+#     config_options+=" --enable-libtwolame"
+#     config_options+=" --enable-libvo-amrwbenc"
+#     config_options+=" --enable-libvorbis"
+#     config_options+=" --enable-libwebp"
+#     config_options+=" --enable-libzimg"
+#     config_options+=" --enable-libzvbi"
+#     config_options+=" --enable-libmysofa"
+#     config_options+=" --enable-libopenjpeg"
+#     config_options+=" --enable-libopenh264"
+#     config_options+=" --enable-libvmaf"
+#     config_options+=" --enable-libsrt"
+#     config_options+=" --enable-libxml2"
+#     config_options+=" --enable-opengl"
+#     config_options+=" --enable-libdav1d"
+#     config_options+=" --enable-gnutls"
+
+#     if [[ "$bits_target" != "32" ]]; then
+#       if [[ $build_svt_hevc = y ]]; then
+#         # SVT-HEVC
+#         # Apply the correct patches based on version. Logic (n4.4 patch for n4.2, n4.3 and n4.4)  based on patch notes here:
+#         # https://github.com/OpenVisualCloud/SVT-HEVC/commit/b5587b09f44bcae70676f14d3bc482e27f07b773#diff-2b35e92117ba43f8397c2036658784ba2059df128c9b8a2625d42bc527dffea1
+#         if [[ $ffmpeg_git_checkout_version == *"n4.4"* ]] || [[ $ffmpeg_git_checkout_version == *"n4.3"* ]] || [[ $ffmpeg_git_checkout_version == *"n4.2"* ]]; then
+#           git apply "$work_dir/SVT-HEVC_git/ffmpeg_plugin/n4.4-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch"
+#           git apply "$patch_dir/SVT-HEVC-0002-doc-Add-libsvt_hevc-encoder-docs.patch"  # upstream patch does not apply on current ffmpeg master
+#         elif [[ $ffmpeg_git_checkout_version == *"n4.1"* ]] || [[ $ffmpeg_git_checkout_version == *"n3.4"* ]] || [[ $ffmpeg_git_checkout_version == *"n3.2"* ]] || [[ $ffmpeg_git_checkout_version == *"n2.8"* ]]; then
+#           : # too old...
+#         else
+#           # newer:
+#           git apply "$work_dir/SVT-HEVC_git/ffmpeg_plugin/master-0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch"
+#         fi
+#         config_options+=" --enable-libsvthevc"
+#       fi
+#       if [[ $build_svt_vp9 = y ]]; then
+#         # SVT-VP9
+#         # Apply the correct patches based on version. Logic (n4.4 patch for n4.2, n4.3 and n4.4)  based on patch notes here:
+#         # https://github.com/OpenVisualCloud/SVT-VP9/tree/master/ffmpeg_plugin
+#         if [[ $ffmpeg_git_checkout_version == *"n4.3.1"* ]]; then
+#           git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/n4.3.1-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
+#         elif [[ $ffmpeg_git_checkout_version == *"n4.2.3"* ]]; then
+#           git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/n4.2.3-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
+#         elif [[ $ffmpeg_git_checkout_version == *"n4.2.2"* ]]; then
+#           git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
+#         else 
+#           # newer:
+#           git apply "$work_dir/SVT-VP9_git/ffmpeg_plugin/master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch"
+#         fi
+#     config_options+=" --enable-libsvtvp9"
+#       fi
+#       config_options+=" --enable-libsvtav1"
+#     fi # else doesn't work/matter with 32 bit
+    config_options+=" --enable-libvpx"
+#   config_options+=" --enable-libaom"
 
     # if [[ $compiler_flavors != "native" ]]; then
     #    config_options+=" --enable-nvenc --enable-nvdec" # don't work OS X
@@ -2506,10 +2538,10 @@ build_ffmpeg() {
     config_options+=" --extra-libs=-lm" # libflite seemed to need this linux native...and have no .pc file huh?
     config_options+=" --extra-libs=-lfreetype"
 
-    if [[ $compiler_flavors != "native" ]]; then
-      config_options+=" --extra-libs=-lshlwapi" # lame needed this, no .pc file?
-    fi
-    config_options+=" --extra-libs=-lmpg123" # ditto
+#    if [[ $compiler_flavors != "native" ]]; then
+#      config_options+=" --extra-libs=-lshlwapi" # lame needed this, no .pc file?
+#    fi
+#    config_options+=" --extra-libs=-lmpg123" # ditto
     config_options+=" --extra-libs=-lpthread" # for some reason various and sundry needed this linux native
 
     config_options+=" --extra-cflags=-DLIBTWOLAME_STATIC --extra-cflags=-DMODPLUG_STATIC --extra-cflags=-DCACA_STATIC" # if we ever do a git pull then it nukes changes, which overrides manual changes to configure, so just use these for now :|
