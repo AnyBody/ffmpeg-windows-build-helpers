@@ -1316,7 +1316,7 @@ build_libogg() {
 }
 
 build_libvorbis() {
-  do_git_checkout https://github.com/xiph/vorbisf.git vorbis_git v1.3.7
+  do_git_checkout https://gitlab.xiph.org/xiph/vorbis.git vorbis_git v1.3.7
   cd vorbis_git
     generic_configure "--disable-docs --disable-examples --disable-oggtest"
     do_make_and_make_install
