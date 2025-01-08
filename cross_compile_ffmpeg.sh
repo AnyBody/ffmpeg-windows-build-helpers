@@ -2439,7 +2439,7 @@ build_ffmpeg() {
     config_options+=" --disable-indevs"
     config_options+=" --enable-gray"
     config_options+=" --enable-libzimg"
-    config_options+=" --enable-liblensfun"
+#    config_options+=" --enable-liblensfun"
     config_options+=" --enable-libxml2"
     config_options+=" --enable-muxer=mp4,null,gif,image2,image2pipe"
     config_options+=" --enable-demuxer=png_pipe,gif,gif-pipe,image2,image2pipe,mov,svg_pipe"
