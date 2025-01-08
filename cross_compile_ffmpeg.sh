@@ -1016,7 +1016,7 @@ build_glfw() {
 }
 
 build_libpng() {
-  do_git_checkout https://github.com/glennrp/libpng.git
+  do_git_checkout https://github.com/glennrp/libpng.git libpng_git v1.6.44
   cd libpng_git
     generic_configure
     do_make_and_make_install
@@ -1316,7 +1316,7 @@ build_libogg() {
 }
 
 build_libvorbis() {
-  do_git_checkout https://github.com/xiph/vorbis.git
+  do_git_checkout https://github.com/xiph/vorbisf.git vorbis_git v1.3.7
   cd vorbis_git
     generic_configure "--disable-docs --disable-examples --disable-oggtest"
     do_make_and_make_install
@@ -2417,7 +2417,7 @@ build_ffmpeg() {
     fi
     if [[ `uname` =~ "5.1" ]]; then
       init_options+=" --disable-schannel"
-      # Fix WinXP incompatibility by disabling Microsoft's Secure Channel, because Windows XP doesn't support TLS 1.1 and 1.2, but with GnuTLS or OpenSSL it does.  XP compat!
+      # Fix WinXP incompatibility by disabling Microsoft's Secure Channel, because Windows XP doesn't support TLS 1.1 and 1.2, but with GnuTLS or OpenSSL it does.  xp_compatcompat!
     fi
     config_options="$init_options"
     config_options+=" --enable-libcaca"
@@ -2496,9 +2496,9 @@ build_ffmpeg() {
     config_options+=" --enable-libvpx"
     config_options+=" --enable-libaom"
 
-    if [[ $compiler_flavors != "native" ]]; then
-      config_options+=" --enable-nvenc --enable-nvdec" # don't work OS X
-    fi
+    # if [[ $compiler_flavors != "native" ]]; then
+    #    config_options+=" --enable-nvenc --enable-nvdec" # don't work OS X
+    # fi
 
     # the order of extra-libs switches is important (appended in reverse)
     config_options+=" --extra-libs=-lz"
