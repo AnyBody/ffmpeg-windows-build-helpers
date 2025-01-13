@@ -18,12 +18,9 @@ jobs:
 
 
       - run: |
-           ./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=y --build-intel-qsv=n --compiler-flavors=win64 --enable-gpl=n
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ffmpeg
-          path: sandbox/cross_compilers/mingw-w64-x86_64/x86_64-w64-mingw32/bin/ffmpeg.exe
+          #./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=y --build-intel-qsv=n --compiler-flavors=win64 --enable-gpl=n
+          echo "Simulating a build error..."
+          exit 1
 
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
@@ -32,3 +29,9 @@ jobs:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
           title: "`AnyBody FFMPEG weekly build failed`"
           msteams_emails: ${{ secrets.MSTEAMS_EMAILS }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg
+          path: sandbox/cross_compilers/mingw-w64-x86_64/x86_64-w64-mingw32/bin/ffmpeg.exe
+
