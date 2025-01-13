@@ -2726,18 +2726,18 @@ build_ffmpeg_dependencies() {
   build_bzip2 # Bzlib (bzip2) in FFmpeg is autodetected.
   build_liblzma # Lzma in FFmpeg is autodetected. Uses dlfcn.
   build_iconv # Iconv in FFmpeg is autodetected. Uses dlfcn.
-  build_sdl2 # Sdl2 in FFmpeg is autodetected. Needed to build FFPlay. Uses iconv and dlfcn.
-  if [[ $build_amd_amf = y ]]; then
-    build_amd_amf_headers
-  fi
-  if [[ $build_intel_qsv = y && $compiler_flavors != "native" ]]; then # Broken for native builds right now: https://github.com/lu-zero/mfx_dispatch/issues/71
-    build_intel_qsv_mfx
-  fi
-  build_nv_headers
+#  build_sdl2 # Sdl2 in FFmpeg is autodetected. Needed to build FFPlay. Uses iconv and dlfcn.
+#  if [[ $build_amd_amf = y ]]; then
+#    build_amd_amf_headers
+#  fi
+#  if [[ $build_intel_qsv = y && $compiler_flavors != "native" ]]; then # Broken for native builds right now: https://github.com/lu-zero/mfx_dispatch/issues/71
+#    build_intel_qsv_mfx
+#  fi
+#  build_nv_headers
   build_libzimg # Uses dlfcn.
-  build_libopenjpeg
-  build_glew
-  build_glfw
+#  build_libopenjpeg
+#  build_glew
+#  build_glfw
   #build_libjpeg_turbo # mplayer can use this, VLC qt might need it? [replaces libjpeg] (ffmpeg seems to not need it so commented out here)
   build_libpng # Needs zlib >= 1.0.4. Uses dlfcn.
   build_libwebp # Uses dlfcn.
@@ -2746,77 +2746,77 @@ build_ffmpeg_dependencies() {
   build_libxml2 # Uses zlib, liblzma, iconv and dlfcn.
   build_libvmaf
   build_fontconfig # Needs freetype and libxml >= 2.6. Uses iconv and dlfcn.
-  build_gmp # For rtmp support configure FFmpeg with '--enable-gmp'. Uses dlfcn.
+#  build_gmp # For rtmp support configure FFmpeg with '--enable-gmp'. Uses dlfcn.
   #build_librtmfp # mainline ffmpeg doesn't use it yet
-  build_libnettle # Needs gmp >= 3.0. Uses dlfcn.
-  build_unistring
-  build_libidn2 # needs iconv and unistring
-  build_gnutls # Needs nettle >= 3.1, hogweed (nettle) >= 3.1. Uses libidn2, unistring, zlib, and dlfcn.
+#  build_libnettle # Needs gmp >= 3.0. Uses dlfcn.
+#  build_unistring
+#  build_libidn2 # needs iconv and unistring
+#  build_gnutls # Needs nettle >= 3.1, hogweed (nettle) >= 3.1. Uses libidn2, unistring, zlib, and dlfcn.
   #if [[ "$non_free" = "y" ]]; then
   #  build_openssl-1.0.2 # Nonfree alternative to GnuTLS. 'build_openssl-1.0.2 "dllonly"' to build shared libraries only.
   #  build_openssl-1.1.1 # Nonfree alternative to GnuTLS. Can't be used with LibRTMP. 'build_openssl-1.1.1 "dllonly"' to build shared libraries only.
   #fi
-  build_libogg # Uses dlfcn.
-  build_libvorbis # Needs libogg >= 1.0. Uses dlfcn.
-  build_libopus # Uses dlfcn.
-  build_libspeexdsp # Needs libogg for examples. Uses dlfcn.
-  build_libspeex # Uses libspeexdsp and dlfcn.
-  build_libtheora # Needs libogg >= 1.1. Needs libvorbis >= 1.0.1, sdl and libpng for test, programs and examples [disabled]. Uses dlfcn.
-  build_libsndfile "install-libgsm" # Needs libogg >= 1.1.3 and libvorbis >= 1.2.3 for external support [disabled]. Uses dlfcn. 'build_libsndfile "install-libgsm"' to install the included LibGSM 6.10.
-  build_mpg123
-  build_lame # Uses dlfcn, mpg123
-  build_twolame # Uses libsndfile >= 1.0.0 and dlfcn.
-  build_libopencore # Uses dlfcn.
-  build_libilbc # Uses dlfcn.
-  build_libmodplug # Uses dlfcn.
-  build_libgme
-  build_libbluray # Needs libxml >= 2.6, freetype, fontconfig. Uses dlfcn.
-  build_libbs2b # Needs libsndfile. Uses dlfcn.
-  build_libsoxr
-  build_libflite
-  build_libsnappy # Uses zlib (only for unittests [disabled]) and dlfcn.
-  build_vamp_plugin # Needs libsndfile for 'vamp-simple-host.exe' [disabled].
-  build_fftw # Uses dlfcn.
-  build_libsamplerate # Needs libsndfile >= 1.0.6 and fftw >= 0.15.0 for tests. Uses dlfcn.
-  build_librubberband # Needs libsamplerate, libsndfile, fftw and vamp_plugin. 'configure' will fail otherwise. Eventhough librubberband doesn't necessarily need them (libsndfile only for 'rubberband.exe' and vamp_plugin only for "Vamp audio analysis plugin"). How to use the bundled libraries '-DUSE_SPEEX' and '-DUSE_KISSFFT'?
-  build_frei0r # Needs dlfcn. could use opencv...
-  if [[ "$bits_target" != "32" ]]; then
-    if [[ $build_svt_hevc = y ]]; then
-      build_svt-hevc
-    fi
-    if [[ $build_svt_vp9 = y ]]; then
-      build_svt-vp9
-    fi
-    build_svt-av1
-  fi
-  build_vidstab
-  #build_facebooktransform360 # needs modified ffmpeg to use it so not typically useful
-  build_libmysofa # Needed for FFmpeg's SOFAlizer filter (https://ffmpeg.org/ffmpeg-filters.html#sofalizer). Uses dlfcn.
-  if [[ "$non_free" = "y" ]]; then
-    build_fdk-aac # Uses dlfcn.
-    if [[ $compiler_flavors != "native" ]]; then
-      build_libdecklink # Error finding rpc.h in native builds even if it's available
-    fi
-  fi
-  build_zvbi # Uses iconv, libpng and dlfcn.
-  build_fribidi # Uses dlfcn.
-  build_libass # Needs freetype >= 9.10.3 (see https://bugs.launchpad.net/ubuntu/+source/freetype1/+bug/78573 o_O) and fribidi >= 0.19.0. Uses fontconfig >= 2.10.92, iconv and dlfcn.
+#  build_libogg # Uses dlfcn.
+#  build_libvorbis # Needs libogg >= 1.0. Uses dlfcn.
+#  build_libopus # Uses dlfcn.
+#  build_libspeexdsp # Needs libogg for examples. Uses dlfcn.
+#  build_libspeex # Uses libspeexdsp and dlfcn.
+#  build_libtheora # Needs libogg >= 1.1. Needs libvorbis >= 1.0.1, sdl and libpng for test, programs and examples [disabled]. Uses dlfcn.
+#  build_libsndfile "install-libgsm" # Needs libogg >= 1.1.3 and libvorbis >= 1.2.3 for external support [disabled]. Uses dlfcn. 'build_libsndfile "install-libgsm"' to install the included LibGSM 6.10.
+#  build_mpg123
+#  build_lame # Uses dlfcn, mpg123
+#  build_twolame # Uses libsndfile >= 1.0.0 and dlfcn.
+#  build_libopencore # Uses dlfcn.
+#  build_libilbc # Uses dlfcn.
+#  build_libmodplug # Uses dlfcn.
+#  build_libgme
+#  build_libbluray # Needs libxml >= 2.6, freetype, fontconfig. Uses dlfcn.
+#  build_libbs2b # Needs libsndfile. Uses dlfcn.
+#  build_libsoxr
+#  build_libflite
+#  build_libsnappy # Uses zlib (only for unittests [disabled]) and dlfcn.
+#  build_vamp_plugin # Needs libsndfile for 'vamp-simple-host.exe' [disabled].
+#  build_fftw # Uses dlfcn.
+#  build_libsamplerate # Needs libsndfile >= 1.0.6 and fftw >= 0.15.0 for tests. Uses dlfcn.
+#  build_librubberband # Needs libsamplerate, libsndfile, fftw and vamp_plugin. 'configure' will fail otherwise. Eventhough librubberband doesn't necessarily need them (libsndfile only for 'rubberband.exe' and vamp_plugin only for "Vamp audio analysis plugin"). How to use the bundled libraries '-DUSE_SPEEX' and '-DUSE_KISSFFT'?
+#  build_frei0r # Needs dlfcn. could use opencv...
+#  if [[ "$bits_target" != "32" ]]; then
+#    if [[ $build_svt_hevc = y ]]; then
+#      build_svt-hevc
+#    fi
+#    if [[ $build_svt_vp9 = y ]]; then
+#      build_svt-vp9
+#    fi
+#    build_svt-av1
+#  fi
+#  build_vidstab
+#  #build_facebooktransform360 # needs modified ffmpeg to use it so not typically useful
+#  build_libmysofa # Needed for FFmpeg's SOFAlizer filter (https://ffmpeg.org/ffmpeg-filters.html#sofalizer). Uses dlfcn.
+#  if [[ "$non_free" = "y" ]]; then
+#    build_fdk-aac # Uses dlfcn.
+#    if [[ $compiler_flavors != "native" ]]; then
+#      build_libdecklink # Error finding rpc.h in native builds even if it's available
+#    fi
+#  fi
+#  build_zvbi # Uses iconv, libpng and dlfcn.
+#  build_fribidi # Uses dlfcn.
+#  build_libass # Needs freetype >= 9.10.3 (see https://bugs.launchpad.net/ubuntu/+source/freetype1/+bug/78573 o_O) and fribidi >= 0.19.0. Uses fontconfig >= 2.10.92, iconv and dlfcn.
 
   build_libxvid # FFmpeg now has native support, but libxvid still provides a better image.
-  build_libsrt # requires gnutls, mingw-std-threads
+#  build_libsrt # requires gnutls, mingw-std-threads
   if [[ $ffmpeg_git_checkout_version != *"n6.0"* ]] && [[ $ffmpeg_git_checkout_version != *"n5.1"* ]] && [[ $ffmpeg_git_checkout_version != *"n5.0"* ]] && [[ $ffmpeg_git_checkout_version != *"n4.4"* ]] && [[ $ffmpeg_git_checkout_version != *"n4.3"* ]] && [[ $ffmpeg_git_checkout_version != *"n4.2"* ]] && [[ $ffmpeg_git_checkout_version != *"n4.1"* ]] && [[ $ffmpeg_git_checkout_version != *"n3.4"* ]] && [[ $ffmpeg_git_checkout_version != *"n3.2"* ]] && [[ $ffmpeg_git_checkout_version != *"n2.8"* ]]; then
     build_libaribcaption
   fi
-  build_libaribb24
-  build_libtesseract
-  build_lensfun  # requires png, zlib, iconv
+#  build_libaribb24
+#  build_libtesseract
+#  build_lensfun  # requires png, zlib, iconv
   # build_libtensorflow # broken
   build_libvpx
-  build_libx265
+#  build_libx265
   build_libopenh264
-  build_libaom
-  build_dav1d
-  build_avisynth
+#  build_libaom
+#  build_dav1d
+#  build_avisynth
   build_libx264 # at bottom as it might internally build a copy of ffmpeg (which needs all the above deps...
  }
 
