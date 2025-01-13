@@ -2727,9 +2727,9 @@ build_ffmpeg_dependencies() {
   build_liblzma # Lzma in FFmpeg is autodetected. Uses dlfcn.
   build_iconv # Iconv in FFmpeg is autodetected. Uses dlfcn.
 #  build_sdl2 # Sdl2 in FFmpeg is autodetected. Needed to build FFPlay. Uses iconv and dlfcn.
-#  if [[ $build_amd_amf = y ]]; then
-#    build_amd_amf_headers
-#  fi
+ if [[ $build_amd_amf = y ]]; then
+   build_amd_amf_headers
+ fi
 #  if [[ $build_intel_qsv = y && $compiler_flavors != "native" ]]; then # Broken for native builds right now: https://github.com/lu-zero/mfx_dispatch/issues/71
 #    build_intel_qsv_mfx
 #  fi
