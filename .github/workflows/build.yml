@@ -9,8 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+
+      - run: | 
+          sudo apt-get update
+          sudo apt-get install -y subversion meson autogen gperf nasm pax cvs yasm ragel
+
+
       - run: |
-           ./cross_compile_ffmpeg.sh
+           ./cross_compile_ffmpeg.sh --build-ffmpeg-shared=n --build-ffmpeg-static=y --disable-nonfree=y --build-intel-qsv=n --compiler-flavors=win64 --enable-gpl=n
 
       - uses: actions/upload-artifact@v3
         with:
