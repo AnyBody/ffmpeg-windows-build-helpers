@@ -1,0 +1,18 @@
+on:
+  workflow_dispatch: {}
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+           ./cross_compile_ffmpeg.sh
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ffmpeg
+          path: sandbox/cross_compilers/mingw-w64-x86_64/x86_64-w64-mingw32/bin/ffmpeg.exe
